@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egg Timer</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        #timer { font-size: 2em; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Egg Timer</h1>
+    <p id="timer">Click Start</p>
+    <button onclick="startTimer()">Start Timer</button>
+
+    <script>
+        function startTimer() {
+            const eventSource = new EventSource('/start');
+            eventSource.onmessage = (event) => {
+                document.getElementById('timer').innerText = JSON.parse(event.data).time + " seconds remaining";
+            };
+            eventSource.onerror = () => {
+                eventSource.close();
+            };
+        }
+    </script>
+</body>
+</html>
